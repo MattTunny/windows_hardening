@@ -11,9 +11,9 @@ https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_20
 https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_2012_R2_Benchmark_v2.2.1.pdf
 
 #### Group Policy refrences:
-https://msdn.microsoft.com/en-au/library/ms815238.aspx
-https://www.microsoft.com/en-au/download/details.aspx?id=25250
-https://www.stigviewer.com/stig/microsoft_windows_server_2012_member_server/  
+- https://msdn.microsoft.com/en-au/library/ms815238.aspx
+- https://www.microsoft.com/en-au/download/details.aspx?id=25250
+- https://www.stigviewer.com/stig/microsoft_windows_server_2012_member_server/  
 
 #### To run all test locally
 ```bash

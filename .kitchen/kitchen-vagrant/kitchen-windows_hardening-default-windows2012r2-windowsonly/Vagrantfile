@@ -1,0 +1,11 @@
+Vagrant.configure("2") do |c|
+  c.berkshelf.enabled = false if Vagrant.has_plugin?("vagrant-berkshelf")
+  c.vm.box = "windows2012r2-windowsonly"
+  c.vm.communicator = "winrm"
+  c.vm.guest = "windows"
+  c.vm.synced_folder ".", "/vagrant", disabled: true
+  c.vm.provider :virtualbox do |p|
+    p.gui = true
+    p.linked_clone = true
+  end
+end

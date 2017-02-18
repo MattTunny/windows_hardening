@@ -21,4 +21,4 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[windows_hardening::default]
+      - recipe[windows_hardening::windows2012r2]
