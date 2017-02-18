@@ -1,5 +1,4 @@
 # windows_hardening
-Chef cookbook for windows server hardening
 
 Chef cookbook for IaC hardening Microsoft Windows Servers without relying on group policy.
 
