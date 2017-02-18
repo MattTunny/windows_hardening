@@ -1,0 +1,24 @@
+driver:
+  name: vagrant
+  gui: true
+  provider: virtualbox
+  linked_clone: true
+
+driver_config:
+  guest: windows
+  communicator: 'winrm'
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+  format: documentation
+
+platforms:
+  - name: windows2012r2-windowsonly
+
+suites:
+  - name: default
+    run_list:
+      - recipe[windows_hardening::default]
