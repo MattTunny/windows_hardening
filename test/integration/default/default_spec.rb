@@ -188,6 +188,7 @@ describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Sa
   its('authenticodeenabled') { should eq 0 }
 end
 
+# rubocop:disable all
 # AllowedPaths Test
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths') do
   its('Machine') { should include /(System\\CurrentControlSet\\Control\\Print\\Printers)/ }
@@ -198,6 +199,7 @@ describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Secur
   its('Machine') { should include /(System\\CurrentControlSet\\Control\\ProductOptions)/ }
 end
 
+# rubocop:enable all
 # WinRS Test
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS') do
   its('AllowRemoteShellAccess') { should eq 1 }

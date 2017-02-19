@@ -269,16 +269,16 @@ registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServ
     name: 'Machine',
     type: :multi_string,
     data: ['System\CurrentControlSet\Control\Print\Printers',
-'System\CurrentControlSet\Services\Eventlog',
-'Software\Microsoft\OLAP Server',
-'Software\Microsoft\Windows NT\CurrentVersion\Print',
-'Software\Microsoft\Windows NT\CurrentVersion\Windows',
-'System\CurrentControlSet\Control\ContentIndex',
-'System\CurrentControlSet\Control\Terminal Server',
-'System\CurrentControlSet\Control\Terminal Server\UserConfig',
-'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
-'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
-'System\CurrentControlSet\Services\SysmonLog'] }]
+           'System\CurrentControlSet\Services\Eventlog',
+           'Software\Microsoft\OLAP Server',
+           'Software\Microsoft\Windows NT\CurrentVersion\Print',
+           'Software\Microsoft\Windows NT\CurrentVersion\Windows',
+           'System\CurrentControlSet\Control\ContentIndex',
+           'System\CurrentControlSet\Control\Terminal Server',
+           'System\CurrentControlSet\Control\Terminal Server\UserConfig',
+           'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
+           'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
+           'System\CurrentControlSet\Services\SysmonLog'] }]
   action :create
 end
 
@@ -288,8 +288,8 @@ registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServ
     name: 'Machine',
     type: :multi_string,
     data: ['System\CurrentControlSet\Control\ProductOptions',
-'System\CurrentControlSet\Control\Server Applications',
-'Software\Microsoft\Windows NT\CurrentVersion'] }]
+           'System\CurrentControlSet\Control\Server Applications',
+           'Software\Microsoft\Windows NT\CurrentVersion'] }]
   action :create
 end
 
