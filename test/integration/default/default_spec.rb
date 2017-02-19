@@ -11,7 +11,7 @@ describe registry_key('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentV
   its('ScreenSaverGracePeriod') { should eq '5' }
   its('AllocateDASD') { should eq '0' }
   its('ScRemoveOption') { should eq '1' }
-  its('CachedLogonsCount') { should eq '0' }
+  its('CachedLogonsCount') { should eq '4' }
 end
 
 # LSA tests
@@ -39,7 +39,7 @@ end
 # LSA MSV1_0 Tests
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0') do
   its('NTLMMinServerSec') { should eq 537_395_200 }
-  its('allownullsessionfallback') { should eq 1 }
+  its('allownullsessionfallback') { should eq 0 }
   its('NTLMMinClientSec') { should eq 537_395_200 }
   its('AuditReceivingNTLMTraffic') { should eq 2 }
 end

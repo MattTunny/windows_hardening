@@ -8,7 +8,7 @@ registry_key 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Wi
           { name: 'ScRemoveOption', type: :string, data: 1 },
           { name: 'ForceUnlockLogon', type: :string, data: 0 },
           { name: 'AutoAdminLogon', type: :string, data: 0 }, # This will stop auto login for kitchen tests
-          { name: 'CachedLogonsCount', type: :string, data: 0 }]
+          { name: 'CachedLogonsCount', type: :string, data: 4 }]
   action :create
 end
 
@@ -43,7 +43,7 @@ end
 if node['NTLM_Harden'] == false
   registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0' do
     values [{ name: 'NTLMMinServerSec', type: :dword, data: 537_395_200 },
-            { name: 'allownullsessionfallback', type: :dword, data: 1 },
+            { name: 'allownullsessionfallback', type: :dword, data: 0 },
             # { name: 'RestrictReceivingNTLMTraffic', type: :dword, data: 2 }, # Hashed out due to breaking WinRM
             # { name: 'RestrictSendingNTLMTraffic', type: :dword, data: 2 }, # Hashed out due to breaking WinRM
             { name: 'NTLMMinClientSec', type: :dword, data: 537_395_200 },
@@ -55,7 +55,7 @@ end
 if node['NTLM_Harden'] == true
   registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0' do
     values [{ name: 'NTLMMinServerSec', type: :dword, data: 537_395_200 },
-            { name: 'allownullsessionfallback', type: :dword, data: 1 },
+            { name: 'allownullsessionfallback', type: :dword, data: 0 },
             { name: 'RestrictReceivingNTLMTraffic', type: :dword, data: 2 },
             { name: 'RestrictSendingNTLMTraffic', type: :dword, data: 2 },
             { name: 'NTLMMinClientSec', type: :dword, data: 537_395_200 },
@@ -268,18 +268,17 @@ registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServ
   values [{
     name: 'Machine',
     type: :multi_string,
-    data: ['System\CurrentControlSet\Control\Print\Printers
-System\CurrentControlSet\Services\Eventlog
-Software\Microsoft\OLAP Server
-Software\Microsoft\Windows NT\CurrentVersion\Print
-Software\Microsoft\Windows NT\CurrentVersion\Windows
-System\CurrentControlSet\Control\ContentIndex
-System\CurrentControlSet\Control\Terminal Server
-System\CurrentControlSet\Control\Terminal Server\UserConfig
-System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration
-Software\Microsoft\Windows NT\CurrentVersion\Perflib
-System\CurrentControlSet\Services\SysmonLog
-'] }]
+    data: ['System\CurrentControlSet\Control\Print\Printers',
+'System\CurrentControlSet\Services\Eventlog',
+'Software\Microsoft\OLAP Server',
+'Software\Microsoft\Windows NT\CurrentVersion\Print',
+'Software\Microsoft\Windows NT\CurrentVersion\Windows',
+'System\CurrentControlSet\Control\ContentIndex',
+'System\CurrentControlSet\Control\Terminal Server',
+'System\CurrentControlSet\Control\Terminal Server\UserConfig',
+'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
+'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
+'System\CurrentControlSet\Services\SysmonLog'] }]
   action :create
 end
 
@@ -288,10 +287,9 @@ registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServ
   values [{
     name: 'Machine',
     type: :multi_string,
-    data: ['System\CurrentControlSet\Control\ProductOptions
-System\CurrentControlSet\Control\Server Applications
-Software\Microsoft\Windows NT\CurrentVersion
-'] }]
+    data: ['System\CurrentControlSet\Control\ProductOptions',
+'System\CurrentControlSet\Control\Server Applications',
+'Software\Microsoft\Windows NT\CurrentVersion'] }]
   action :create
 end
 
