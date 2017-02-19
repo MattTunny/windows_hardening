@@ -182,9 +182,66 @@ registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manage
   action :create
 end
 
-# EMET Parameters (IE)
+# EMET Parameters
 registry_key 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\EMET\Defaults' do
-  values [{ name: 'IE', type: :string, data: '*\Internet Explorer\iexplore.exe' }]
+  values [{ name: 'IE', type: :string, data: '*\Internet Explorer\iexplore.exe' },
+          { name: '7z', type: :string, data: '*\7-Zip\7z.exe -EAF' },
+          { name: '7zFM', type: :string, data: '*\7-Zip\7zFM.exe -EAF' },
+          { name: '7zGUI', type: :string, data: '*\7-Zip\7zG.exe -EAF' },
+          { name: 'Access', type: :string, data: '*\OFFICE1*\MSACCESS.EXE' },
+          { name: 'Acrobat', type: :string, data: '*\Adobe\Acrobat*\Acrobat\Acrobat.exe' },
+          { name: 'AcrobatReader', type: :string, data: '*\Adobe\Reader*\Reader\AcroRd32.exe' },
+          { name: 'Chrome', type: :string, data: '*\Google\Chrome\Application\chrome.exe -SEHOP' },
+          { name: 'Excel', type: :string, data: '*\OFFICE1*\EXCEL.EXE' },
+          { name: 'Firefox', type: :string, data: '*\Mozilla Firefox\firefox.exe' },
+          { name: 'FirefoxPluginContainer', type: :string, data: '*\Mozilla Firefox\plugin-container.exe' },
+          { name: 'FoxitReader', type: :string, data: '*\Foxit Reader\Foxit Reader.exe' },
+          { name: 'GoogleTalk', type: :string, data: '*\Google\Google Talk\googletalk.exe -DEP -SEHOP' },
+          { name: 'InfoPath', type: :string, data: '*\OFFICE1*\INFOPATH.EXE' },
+          { name: 'iTunes', type: :string, data: '*\iTunes\iTunes.exe' },
+          { name: 'jre6_java', type: :string, data: '*\Java\jre6\bin\java.exe -HeapSpray' },
+          { name: 'jre6_javaw', type: :string, data: '*\Java\jre6\bin\javaw.exe -HeapSpray' },
+          { name: 'jre6_javaws', type: :string, data: '*\Java\jre6\bin\javaws.exe -HeapSpray' },
+          { name: 'jre7_java', type: :string, data: '*\Java\jre7\bin\java.exe -HeapSpray' },
+          { name: 'jre7_javaw', type: :string, data: '*\Java\jre7\bin\javaw.exe -HeapSpray' },
+          { name: 'jre7_javaws', type: :string, data: '*\Java\jre7\bin\javaws.exe -HeapSpray' },
+          { name: 'jre8_java', type: :string, data: '*\Java\jre1.8*\bin\java.exe -HeapSpray' },
+          { name: 'jre8_javaw', type: :string, data: '*\Java\jre1.8*\bin\javaw.exe -HeapSpray' },
+          { name: 'jre8_javaws', type: :string, data: '*\Java\jre1.8*\bin\javaws.exe -HeapSpray' },
+          { name: 'LiveWriter', type: :string, data: '*\Windows Live\Writer\WindowsLiveWriter.exe' },
+          { name: 'Lync', type: :string, data: '*\OFFICE1*\LYNC.EXE' },
+          { name: 'LyncCommunicator', type: :string, data: '*\Microsoft Lync\communicator.exe' },
+          { name: 'mIRC', type: :string, data: '*\mIRC\mirc.exe' },
+          { name: 'Opera', type: :string, data: '*\Opera\opera.exe' },
+          { name: 'Outlook', type: :string, data: '*\OFFICE1*\OUTLOOK.EXE' },
+          { name: 'PhotoGallery', type: :string, data: '*\Windows Live\Photo Gallery\WLXPhotoGallery.exe' },
+          { name: 'Photoshop', type: :string, data: '*\Adobe\Adobe Photoshop CS*\Photoshop.exe' },
+          { name: 'Picture Manager', type: :string, data: '*\OFFICE1*\OIS.EXE' },
+          { name: 'Pidgin', type: :string, data: '*\Pidgin\pidgin.exe' },
+          { name: 'PowerPoint', type: :string, data: '*\OFFICE1*\POWERPNT.EXE' },
+          { name: 'PPTViewer', type: :string, data: '*\OFFICE1*\PPTVIEW.EXE' },
+          { name: 'Publisher', type: :string, data: '*\OFFICE1*\MSPUB.EXE' },
+          { name: 'QuickTimePlayer', type: :string, data: '*\QuickTime\QuickTimePlayer.exe' },
+          { name: 'RealConverter', type: :string, data: '*\Real\RealPlayer\realconverter.exe' },
+          { name: 'RealPlayer', type: :string, data: '*\Real\RealPlayer\realplay.exe' },
+          { name: 'Safari', type: :string, data: '*\Safari\Safari.exe' },
+          { name: 'SkyDrive', type: :string, data: '*\SkyDrive\SkyDrive.exe' },
+          { name: 'Skype', type: :string, data: '*\Skype\Phone\Skype.exe -EAF' },
+          { name: 'Thunderbird', type: :string, data: '*\Mozilla Thunderbird\thunderbird.exe' },
+          { name: 'ThunderbirdPluginContainer', type: :string, data: '*\Mozilla Thunderbird\plugin-container.exe' },
+          { name: 'UnRAR', type: :string, data: '*\WinRAR\unrar.exe' },
+          { name: 'Visio', type: :string, data: '*\OFFICE1*\VISIO.EXE' },
+          { name: 'VisioViewer', type: :string, data: '*\OFFICE1*\VPREVIEW.EXE' },
+          { name: 'VLC', type: :string, data: '*\VideoLAN\VLC\vlc.exe' },
+          { name: 'Winamp', type: :string, data: '*\Winamp\winamp.exe' },
+          { name: 'WindowsLiveMail', type: :string, data: '*\Windows Live\Mail\wlmail.exe' },
+          { name: 'WindowsMediaPlayer', type: :string, data: '*\Windows Media Player\wmplayer.exe -SEHOP -EAF -MandatoryASLR' },
+          { name: 'WinRARConsole', type: :string, data: '*\WinRAR\rar.exe' },
+          { name: 'WinRARGUI', type: :string, data: '*\WinRAR\winrar.exe' },
+          { name: 'WinZip', type: :string, data: '*\WinZip\winzip32.exe' },
+          { name: 'Winzip64', type: :string, data: '*\WinZip\winzip64.exe' },
+          { name: 'Word', type: :string, data: '*\OFFICE1*\WINWORD.EXE' },
+          { name: 'Wordpad', type: :string, data: '*\Windows NT\Accessories\wordpad.exe' }]
   recursive true
   action :create
 end
@@ -450,11 +507,6 @@ cookbook_file 'c:/temp/localComputer.inf' do
 end
 
 # Reg Files for save applications
-cookbook_file 'c:/temp/EMET_Files.reg' do
-  action :create
-end
-
-# Reg Files for save applications
 cookbook_file 'c:/temp/audit_settings.csv' do
   action :create
 end
@@ -465,12 +517,10 @@ powershell_script 'import' do
   code <<-EOH
     secedit /import /db secedit.sdb /cfg localComputer.inf
     secedit /configure /db secedit.sdb
-    regedit /s c:\temp\EMET_Files.reg
     auditpol /restore /File:audit_settings.csv
     gpupdate /force
     del "localComputer.inf" -force -ErrorAction SilentlyContinue
     del "secedit.sdb" -force -ErrorAction SilentlyContinue
     del "audit_settings.csv" -force -ErrorAction SilentlyContinue
-    del "EMET_Files.reg" -force -ErrorAction SilentlyContinue
     EOH
 end
