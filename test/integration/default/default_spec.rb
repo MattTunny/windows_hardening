@@ -16,7 +16,7 @@ end
 
 # LSA tests
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa') do
-  its('FullPrivilegeAuditing') { should eq [49] }
+  its('FullPrivilegeAuditing') { should eq [01] }
   its('AuditBaseObjects') { should eq 1 }
   its('SCENoApplyLegacyAuditPolicy') { should eq 1 }
   its('DisableDomainCreds') { should eq 1 }
@@ -140,6 +140,63 @@ end
 # EMET (IE)Parameters Test
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\EMET\Defaults') do
   its('IE') { should eq '*\Internet Explorer\iexplore.exe' }
+  its('7z') { should eq '*\7-Zip\7z.exe -EAF' }
+  its('7zFM') { should eq '*\7-Zip\7zFM.exe -EAF' }
+  its('7zGUI') { should eq '*\7-Zip\7zG.exe -EAF' }
+  its('Access') { should eq '*\OFFICE1*\MSACCESS.EXE' }
+  its('Acrobat') { should eq '*\Adobe\Acrobat*\Acrobat\Acrobat.exe' }
+  its('AcrobatReader') { should eq '*\Adobe\Reader*\Reader\AcroRd32.exe' }
+  its('Chrome') { should eq '*\Google\Chrome\Application\chrome.exe -SEHOP' }
+  its('Excel') { should eq '*\OFFICE1*\EXCEL.EXE' }
+  its('Firefox') { should eq '*\Mozilla Firefox\firefox.exe' }
+  its('FirefoxPluginContainer') { should eq '*\Mozilla Firefox\plugin-container.exe' }
+  its('FoxitReader') { should eq '*\Foxit Reader\Foxit Reader.exe' }
+  its('GoogleTalk') { should eq '*\Google\Google Talk\googletalk.exe -DEP -SEHOP' }
+  its('InfoPath') { should eq '*\OFFICE1*\INFOPATH.EXE' }
+  its('iTunes') { should eq '*\iTunes\iTunes.exe' }
+  its('jre6_java') { should eq '*\Java\jre6\bin\java.exe -HeapSpray' }
+  its('jre6_javaw') { should eq '*\Java\jre6\bin\javaw.exe -HeapSpray' }
+  its('jre6_javaws') { should eq '*\Java\jre6\bin\javaws.exe -HeapSpray' }
+  its('jre7_java') { should eq '*\Java\jre7\bin\java.exe -HeapSpray' }
+  its('jre7_javaw') { should eq '*\Java\jre7\bin\javaw.exe -HeapSpray' }
+  its('jre7_javaws') { should eq '*\Java\jre7\bin\javaws.exe -HeapSpray' }
+  its('jre8_java') { should eq '*\Java\jre1.8*\bin\java.exe -HeapSpray' }
+  its('jre8_javaw') { should eq '*\Java\jre1.8*\bin\javaw.exe -HeapSpray' }
+  its('jre8_javaws') { should eq '*\Java\jre1.8*\bin\javaws.exe -HeapSpray' }
+  its('LiveWriter') { should eq '*\Windows Live\Writer\WindowsLiveWriter.exe' }
+  its('Lync') { should eq '*\OFFICE1*\LYNC.EXE' }
+  its('LyncCommunicator') { should eq '*\Microsoft Lync\communicator.exe' }
+  its('mIRC') { should eq '*\mIRC\mirc.exe' }
+  its('Opera') { should eq '*\Opera\opera.exe' }
+  its('Outlook') { should eq '*\OFFICE1*\OUTLOOK.EXE' }
+  its('PhotoGallery') { should eq '*\Windows Live\Photo Gallery\WLXPhotoGallery.exe' }
+  its('Photoshop') { should eq '*\Adobe\Adobe Photoshop CS*\Photoshop.exe' }
+  its('Picture Manager') { should eq '*\OFFICE1*\OIS.EXE' }
+  its('Pidgin') { should eq '*\Pidgin\pidgin.exe' }
+  its('PowerPoint') { should eq '*\OFFICE1*\POWERPNT.EXE' }
+  its('PPTViewer') { should eq '*\OFFICE1*\PPTVIEW.EXE' }
+  its('Publisher') { should eq '*\OFFICE1*\MSPUB.EXE' }
+  its('QuickTimePlayer') { should eq '*\QuickTime\QuickTimePlayer.exe' }
+  its('RealConverter') { should eq '*\Real\RealPlayer\realconverter.exe' }
+  its('RealPlayer') { should eq '*\Real\RealPlayer\realplay.exe' }
+  its('Safari') { should eq '*\Safari\Safari.exe' }
+  its('SkyDrive') { should eq '*\SkyDrive\SkyDrive.exe' }
+  its('Skype') { should eq '*\Skype\Phone\Skype.exe -EAF' }
+  its('Thunderbird') { should eq '*\Mozilla Thunderbird\thunderbird.exe' }
+  its('ThunderbirdPluginContainer') { should eq '*\Mozilla Thunderbird\plugin-container.exe' }
+  its('UnRAR') { should eq '*\WinRAR\unrar.exe' }
+  its('Visio') { should eq '*\OFFICE1*\VISIO.EXE' }
+  its('VisioViewer') { should eq '*\OFFICE1*\VPREVIEW.EXE' }
+  its('VLC') { should eq '*\VideoLAN\VLC\vlc.exe' }
+  its('Winamp') { should eq '*\Winamp\winamp.exe' }
+  its('WindowsLiveMail') { should eq '*\Windows Live\Mail\wlmail.exe' }
+  its('WindowsMediaPlayer') { should eq '*\Windows Media Player\wmplayer.exe -SEHOP -EAF -MandatoryASLR' }
+  its('WinRARConsole') { should eq '*\WinRAR\rar.exe' }
+  its('WinRARGUI') { should eq '*\WinRAR\winrar.exe' }
+  its('WinZip') { should eq '*\WinZip\winzip32.exe' }
+  its('Winzip64') { should eq '*\WinZip\winzip64.exe' }
+  its('Word') { should eq '*\OFFICE1*\WINWORD.EXE' }
+  its('Wordpad') { should eq '*\Windows NT\Accessories\wordpad.exe' }
 end
 
 # EMET (IE)Parameters Test
