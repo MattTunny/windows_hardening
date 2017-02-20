@@ -14,20 +14,26 @@ end
 
 # LSA settings
 registry_key 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa' do
-  values [{ name: 'FullPrivilegeAuditing', type: :binary, data: 01 },
-          { name: 'AuditBaseObjects', type: :dword, data: 1 },
-          { name: 'SCENoApplyLegacyAuditPolicy', type: :dword, data: 1 },
-          { name: 'DisableDomainCreds', type: :dword, data: 1 },
-          { name: 'LimitBlankPasswordUse', type: :dword, data: 1 },
-          { name: 'CrashOnAuditFail', type: :dword, data: 0 },
-          { name: 'RestrictAnonymousSAM', type: :dword, data: 1 },
-          { name: 'RestrictAnonymous', type: :dword, data: 0 },
-          { name: 'SubmitControl', type: :dword, data: 0 },
-          { name: 'ForceGuest', type: :dword, data: 0 },
-          { name: 'EveryoneIncludesAnonymous', type: :dword, data: 0 },
-          { name: 'NoLMHash', type: :dword, data: 1 },
-          { name: 'LmCompatibilityLevel', type: :dword, data: 5 }]
+  values [ # { name: 'fullprivilegeauditing', type: :binary, data: -01 }, Removed due to 31 value being passed through chef, added powershell script below
+    { name: 'AuditBaseObjects', type: :dword, data: 1 },
+    { name: 'SCENoApplyLegacyAuditPolicy', type: :dword, data: 1 },
+    { name: 'DisableDomainCreds', type: :dword, data: 1 },
+    { name: 'LimitBlankPasswordUse', type: :dword, data: 1 },
+    { name: 'CrashOnAuditFail', type: :dword, data: 0 },
+    { name: 'RestrictAnonymousSAM', type: :dword, data: 1 },
+    { name: 'RestrictAnonymous', type: :dword, data: 0 },
+    { name: 'SubmitControl', type: :dword, data: 0 },
+    { name: 'ForceGuest', type: :dword, data: 0 },
+    { name: 'EveryoneIncludesAnonymous', type: :dword, data: 0 },
+    { name: 'NoLMHash', type: :dword, data: 1 },
+    { name: 'LmCompatibilityLevel', type: :dword, data: 5 }]
   action :create
+end
+
+powershell_script 'fullprivilegeauditing' do
+  code <<-EOH
+Set-ItemProperty -Path "HKLM:\\System\\CurrentControlSet\\Control\\Lsa" -Name fullprivilegeauditing -Value 01
+EOH
 end
 
 # This setting prevents online identities from being used by PKU2U, which is a peer-to-peer authentication protocol. Authentication will be centrally managed with Windows user accounts.
