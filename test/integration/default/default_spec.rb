@@ -99,7 +99,7 @@ describe registry_key('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVers
   its('ShutdownWithoutLogon') { should eq 0 }
   its('legalnoticecaption') { should eq 'Company Logon Warning' }
   its('legalnoticetext') do
-    should eq 'Unauthorised access message.'
+    should eq 'Warning text goes here...'
   end
 end
 
