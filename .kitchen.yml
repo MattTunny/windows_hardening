@@ -10,6 +10,7 @@ driver_config:
 
 provisioner:
   name: chef_zero
+  # deprecations_as_errors: true
 
 verifier:
   name: inspec
@@ -21,4 +22,14 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[windows_hardening::windows2012r2]
+      - recipe[windows_hardening::default]
+
+  - name: production
+    run_list:
+      - recipe[cb_server_hardening::deleteautologon]
+      - recipe[joindomain::default]
+      - recipe[cb_server_hardening::domainjoined]
+      - recipe[cb_server_hardening::default]
+    verifier:
+      inspec_tests:
+        - test/integration/default/core_hardening_spec.rb
