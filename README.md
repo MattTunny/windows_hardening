@@ -6,9 +6,9 @@ Chef cookbook for IaC hardening Microsoft Windows Servers without relying on gro
 
 #### Center for Internet Security (CIS)
 - Windows 2012 
-https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_2012_non-R2_Benchmark_v2.0.1.pdf
+- https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_2012_non-R2_Benchmark_v2.0.1.pdf
 - Windows 2012R2
-https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_2012_R2_Benchmark_v2.2.1.pdf
+- https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_2012_R2_Benchmark_v2.2.1.pdf
 
 #### Group Policy refrences:
 - https://msdn.microsoft.com/en-au/library/ms815238.aspx
@@ -18,6 +18,13 @@ https://benchmarks.cisecurity.org/tools2/windows/CIS_Microsoft_Windows_Server_20
 #### To run all test locally
 ```bash
 kitchen verify
+```
+
+#### To run all tests in domain
+```bash
+kitchen converge production
+kitchen converge production
+kitchen verify production
 ```
 
 #### To run all tests remote | Password requires '' or ""
