@@ -677,12 +677,12 @@ directory 'c:/temp' do
 end
 
 # Local Security Policy
-cookbook_file 'c:/temp/iac_localComputer.inf' do
+cookbook_file 'c:/temp/localComputer.inf' do
   action :create
 end
 
 # Reg Files for save applications
-cookbook_file 'c:/temp/iac_audit_settings.csv' do
+cookbook_file 'c:/temp/audit_settings.csv' do
   action :create
 end
 
@@ -690,13 +690,13 @@ end
 powershell_script 'import' do
   cwd 'c:/temp'
   code <<-EOH
-    secedit /import /db secedit.sdb /cfg iac_localComputer.inf
+    secedit /import /db secedit.sdb /cfg localComputer.inf
     secedit /configure /db secedit.sdb
-    auditpol /restore /File:iac_audit_settings.csv
+    auditpol /restore /File:audit_settings.csv
     gpupdate /force
-    #del "iac_localComputer.inf" -force -ErrorAction SilentlyContinue
+    #del "localComputer.inf" -force -ErrorAction SilentlyContinue
     #del "secedit.sdb" -force -ErrorAction SilentlyContinue
-    #del "iac_audit_settings.csv" -force -ErrorAction SilentlyContinue
+    #del "audit_settings.csv" -force -ErrorAction SilentlyContinue
     EOH
 end
 
