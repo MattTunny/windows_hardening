@@ -1,0 +1,7 @@
+include_recipe 'windows_hardening::enable_winrm'
+include_recipe 'windows_hardening::core_hardening'
+include_recipe 'windows_hardening::ciphers'
+include_recipe 'windows_hardening::windowsupdate'
+include_recipe 'windows_hardening::enable_firewall'
+include_recipe 'windows_hardening::harden_ntlm'
+include_recipe 'windows_hardening::harden_winrm'
