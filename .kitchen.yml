@@ -26,10 +26,10 @@ suites:
 
   - name: production
     run_list:
-      - recipe[cb_server_hardening::deleteautologon]
+      - recipe[windows_hardening::deleteautologon]
       - recipe[joindomain::default]
-      - recipe[cb_server_hardening::domainjoined]
-      - recipe[cb_server_hardening::default]
+      - recipe[windows_hardening::domainjoined]
+      - recipe[windows_hardening::default]
     verifier:
       inspec_tests:
         - test/integration/default/core_hardening_spec.rb
