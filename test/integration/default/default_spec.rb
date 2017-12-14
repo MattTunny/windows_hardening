@@ -12,22 +12,24 @@ describe registry_key('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentV
   its('AllocateDASD') { should eq '0' }
   its('ScRemoveOption') { should eq '1' }
   its('CachedLogonsCount') { should eq '4' }
+  its('ForceUnlockLogon') { should eq 1 }
 end
 
 # LSA tests
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa') do
-  its('FullPrivilegeAuditing') { should eq [01] }
-  its('AuditBaseObjects') { should eq 1 }
-  its('SCENoApplyLegacyAuditPolicy') { should eq 1 }
+  its('FullPrivilegeAuditing') { should eq [0o0] }
+  its('AuditBaseObjects') { should eq 0 }
+  its('scenoapplylegacyauditpolicy') { should eq 1 }
   its('DisableDomainCreds') { should eq 1 }
   its('LimitBlankPasswordUse') { should eq 1 }
   its('CrashOnAuditFail') { should eq 0 }
   its('RestrictAnonymousSAM') { should eq 1 }
-  its('RestrictAnonymous') { should eq 0 }
+  its('RestrictAnonymous') { should eq 1 }
   its('SubmitControl') { should eq 0 }
   its('ForceGuest') { should eq 0 }
   its('EveryoneIncludesAnonymous') { should eq 0 }
   its('NoLMHash') { should eq 1 }
+  its('SubmitControl') { should eq 0 }
   its('LmCompatibilityLevel') { should eq 5 }
 end
 
@@ -35,20 +37,6 @@ end
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\pku2u') do
   its('AllowOnlineID') { should eq 0 }
 end
-
-# LSA MSV1_0 Tests
-describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0') do
-  its('NTLMMinServerSec') { should eq 537_395_200 }
-  its('allownullsessionfallback') { should eq 0 }
-  its('NTLMMinClientSec') { should eq 537_395_200 }
-  its('AuditReceivingNTLMTraffic') { should eq 2 }
-end
-
-# NTLM Test
-# describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0') do
-#  its('RestrictReceivingNTLMTraffic') { should eq 2 }
-#  its('RestrictSendingNTLMTraffic') { should eq 2 }
-# end
 
 # FIPS FIPSAlgorithmPolicy Test
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\FIPSAlgorithmPolicy') do
@@ -80,15 +68,26 @@ describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpi
   its('TcpMaxDataRetransmissions') { should eq 3 }
 end
 
+# Audit Process Creation
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit') do
+  its('ProcessCreationIncludeCmdLine_Enabled') { should eq 0 }
+end
+
+# Ensure 'Network Security: Configure encryption types allowed for Kerberos' is set to 'RC4_HMAC_MD5, AES128_HMAC_SHA1,AES256_HMAC_SHA1, Future encryption types'
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters') do
+  its('supportedencryptiontypes') { should eq 2_147_483_644 }
+end
+
 # Windows System Policies Tests
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
   its('ConsentPromptBehaviorUser') { should eq 0 }
   its('EnableLUA') { should eq 1 }
   its('PromptOnSecureDesktop') { should eq 1 }
+  its('NoConnectedUser') { should eq 3 }
   its('EnableVirtualization') { should eq 1 }
   its('EnableUIADesktopToggle') { should eq 0 }
   its('ConsentPromptBehaviorAdmin') { should eq 2 }
-  its('LocalAccountTokenFilterPolicy') { should eq 0 }
+  # its('LocalAccountTokenFilterPolicy') { should eq 1 } #Removed due to breaking Test-Kitchen
   its('EnableSecureUIAPaths') { should eq 1 }
   its('FilterAdministratorToken') { should eq 1 }
   its('MaxDevicePasswordFailedAttempts') { should eq 10 }
@@ -111,7 +110,7 @@ describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanM
   its('RestrictNullSessAccess') { should eq 1 }
   its('enableforcedlogoff') { should eq 1 }
   its('autodisconnect') { should eq 15 }
-  its('SMBServerNameHardeningLevel') { should eq 0 }
+  its('SMBServerNameHardeningLevel') { should eq 1 }
 end
 
 # Lanman Workstations Tests
@@ -216,7 +215,7 @@ end
 
 # Memory Management Test
 describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Memory Management') do
-  its('ClearPageFileAtShutdown') { should eq 0 }
+  its('ClearPageFileAtShutdown') { should eq 1 }
 end
 
 # RecoveryConsole Parameters Test
@@ -277,19 +276,46 @@ describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\defau
   its('value') { should eq 0 }
 end
 
+# Disable Windows Store
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsStore') do
+  its('AutoDownload') { should eq 4 }
+  its('DisableOSUpgrade') { should eq 1 }
+end
+
 # Disable Network SelectionUI Test
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System') do
   its('DontDisplayNetworkSelectionUI') { should eq 1 }
+  its('DontEnumerateConnectedUsers') { should eq 1 }
+  its('EnumerateLocalUsers') { should eq 0 }
+  its('DisableLockScreenAppNotifications') { should eq 1 }
+  its('AllowDomainPINLogon') { should eq 0 }
+  its('EnableSmartScreen') { should eq 2 }
+end
+
+# Windows Error Reporting
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting') do
+  its('AutoApproveOSDumps') { should eq 0 }
+end
+
+# Windows Consent
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting\Consent') do
+  its('DefaultConsent') { should eq 1 }
 end
 
 # UAC Elevation TesT
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer') do
   its('AlwaysInstallElevated') { should eq 0 }
+  its('EnableUserControl') { should eq 0 }
+end
+
+# Disable SkyDrive
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\SkyDrive') do
+  its('DisableFileSync') { should eq 1 }
 end
 
 # Audit Application Log Tests
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Application') do
-  its('MaxSize') { should eq 327_68 }
+  its('MaxSize') { should eq 32_768 }
   its('Retention') { should eq '0' }
 end
 
@@ -299,9 +325,15 @@ describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Ev
   its('Retention') { should eq '0' }
 end
 
-# Audit EventLog Tests
+# Audit System Tests
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\System') do
-  its('MaxSize') { should eq 327_68 }
+  its('MaxSize') { should eq 32_768 }
+  its('Retention') { should eq '0' }
+end
+
+# Audit Setup Tests
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Setup') do
+  its('MaxSize') { should eq 32_768 }
   its('Retention') { should eq '0' }
 end
 
@@ -309,11 +341,21 @@ end
 describe registry_key('HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer') do
   its('NoDriveTypeAutoRun') { should eq 255 }
   its('NoPublishingWizard') { should eq 1 }
+  its('NoAutorun') { should eq 1 }
+  its('PreXPSP2ShellProtocolBehavior') { should eq 0 } # 18.9.30.5 (L1) Ensure 'Turn off shell protocol protected mode' is set to 'Disabled'
 end
 
 # RDP encryption Test
 describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services') do
   its('MinEncryptionLevel') { should eq 3 }
+  its('fAllowUnsolicited') { should eq 0 }
+  its('DeleteTempDirsOnExit') { should eq 1 }
+  its('DisablePasswordSaving') { should eq 1 }
+  its('fPromptForPassword') { should eq 1 }
+  its('fAllowToGetHelp') { should eq 0 }
+  its('fDisableCdm') { should eq 1 }
+  its('fEncryptRPCTraffic') { should eq 1 }
+  its('PerSessionTempDir') { should eq 1 }
 end
 
 # Index of Encryption Files Test
@@ -337,10 +379,160 @@ describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Dr
   its('DontSearchWindowsUpdate') { should eq 1 }
 end
 
+# PowerShell Settings
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging') do
+  its('EnableScriptBlockLogging') { should eq 0 }
+end
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\PowerShell\Transcription') do
+  its('EnableTranscripting') { should eq 0 }
+end
+
+# Credential User Interface # 18.9.13.1 (L1) Ensure 'Do not display the password reveal button' is set to 'Enabled'
+# 18.9.15.2 (L1) Ensure 'Enumerate administrator accounts on elevation' is set to 'Disabled'
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredUI') do
+  its('DisablePasswordReveal') { should eq 1 }
+  its('EnumerateAdministrators') { should eq 0 }
+end
+
+# NetBIOS over TCP/IP Parameters
+describe registry_key('HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\NetBT\Parameters') do
+  its('nonamereleaseondemand') { should eq 1 }
+end
+
+# Domain User for network path
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Network Connections') do
+  its('NC_StdDomainUserSetLocation') { should eq 1 }
+  its('NC_AllowNetBridge_NLA') { should eq 0 }
+end
+
+# Hardening Network Paths
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths') do
+  its('\\\*\NETLOGON') { should eq 'RequireMutualAuthentication=1,RequireIntegrity=1' }
+  its('\\\*\SYSVOL') { should eq 'RequireMutualAuthentication=1,RequireIntegrity=1' }
+end
+
+# Windows Connection Manager - Minimize the number of simultaneousconnections to the Internet
+describe registry_key('HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WcmSvc\GroupPolicy') do
+  its('fMinimizeConnections') { should eq 1 }
+end
+
+# Disable old protocols TLS 1.0
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel\Protocols\TLS 1.0\Server') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable old protocols TLS 1.1
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel\Protocols\TLS 1.1\Server') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable old protocols sslv3 client
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel\Protocols\SSL 3.0\Client') do
+  its('DisabledByDefault') { should eq 1 }
+end
+
+# Disable old protocols sslv3 server
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel\Protocols\SSL 3.0\Server') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable old protocols PCT 1.0
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel\Protocols\PCT 1.0\Server') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable old protocols SSLv2.0
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel\Protocols\SSL 2.0\Server') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - DES
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\DES 56/56') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - NULL
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\NULL') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - RC2 40/128
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC2 40/128') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - RC2 56/128
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC2 56/128') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - RC4 40/128
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 40/128') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - RC4 56/128
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 56/128') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disable Weak Ciphers - RC4 64/128
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128') do
+  its('Enabled') { should eq 0 }
+end
+
+# Disallow Autoplay for non-volume devices
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Explorer') do
+  its('NoAutoplayfornonVolume') { should eq 1 }
+  its('NoDataExecutionPrevention') { should eq 0 }
+  its('NoHeapTerminationOnCorruption') { should eq 0 }
+end
+
+# 18.8.19.2 (L1) Ensure 'Configure registry policy processing: Do not apply during periodic background processing' is set to 'Enabled: FALSE'
+describe registry_key('HKEY_LOCAL_MACHINE\\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}') do
+  its('NoBackgroundPolicy') { should eq 0 }
+  its('NoGPOListChanges') { should eq 0 }
+end
+
+# Early Launch Antimalware
+# 18.8.12.1 (L1) Ensure 'Boot-Start Driver Initialization Policy' is set to'Enabled: Good, unknown and bad but critical'
+describe registry_key('HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Policies\EarlyLaunch') do
+  its('DriverLoadPolicy') { should eq 1 }
+end
+
+# 18.8.32 Remote Procedure Call
+# Ensure 'Enable RPC Endpoint Mapper Client Authentication' is set to 'Enabled'
+# DO NOT APPLY TO DOMAIN CONTROLLER - Breaks One-way trust
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Rpc') do
+  its('EnableAuthEpResolution') { should eq 1 }
+end
+
+# 18.9.53 RSS Feeds
+# 18.9.53.1 (L1) Ensure 'Prevent downloading of enclosures' is set to 'Enabled'
+# Internet Explorer
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Feeds') do
+  its('DisableEnclosureDownload') { should eq 1 }
+end
+
+# 18.9.90.4 (L1) Ensure 'No auto-restart with logged on users for scheduled automatic updates installations' is set to 'Disabled'
+# Windows Update Force reboot if users are logged on
+# Windows Update
+describe registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU') do
+  its('NoAutoRebootWithLoggedOnUsers') { should eq 0 }
+end
+
 # Local Policy Script
 script = <<-EOH
 secedit /export /cfg c:\\temp\\tempexport.inf /quiet
 Get-content C:\\temp\\tempexport.inf | findstr /B `
+/C:"MinimumPasswordAge = 1" `
+/C:"MaximumPasswordAge = 42" `
+/C:"MinimumPasswordLength = 14" `
+/C:"PasswordComplexity = 1" `
+/C:"PasswordHistorySize = 24" `
+/C:"LockoutBadCount = 10" `
+/C:"ResetLockoutCount = 15" `
+/C:"LockoutDuration = 15" `
 /C:"SeNetworkLogonRight = *S-1-5-11,*S-1-5-32-544" `
 /C:"SeServiceLogonRight = *S-1-5-80-0" `
 /C:"SeInteractiveLogonRight = *S-1-5-32-544" `
@@ -361,7 +553,15 @@ EOH
 # Local Policy Tester
 describe powershell(script) do
   its('stdout') do
-    should eq "SeNetworkLogonRight = *S-1-5-11,*S-1-5-32-544\r
+    should eq "MinimumPasswordAge = 1\r
+MaximumPasswordAge = 42\r
+MinimumPasswordLength = 14\r
+PasswordComplexity = 1\r
+PasswordHistorySize = 24\r
+LockoutBadCount = 10\r
+ResetLockoutCount = 15\r
+LockoutDuration = 15\r
+SeNetworkLogonRight = *S-1-5-11,*S-1-5-32-544\r
 SeServiceLogonRight = *S-1-5-80-0\r
 SeInteractiveLogonRight = *S-1-5-32-544\r
 SeSecurityPrivilege = *S-1-5-32-544\r
